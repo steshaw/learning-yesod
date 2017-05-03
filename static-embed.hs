@@ -35,13 +35,13 @@ mkEmbeddedStatic False "eStatic" [embedFile "static-embed.hs"]
 
 -- The above will generate variables
 -- eStatic :: EmbeddedStatic
--- sample_embed_hs :: Route EmbeddedStatic
+-- static_embed_hs :: Route EmbeddedStatic
 
 newtype MyApp = MyApp { getStatic :: EmbeddedStatic }
 
 mkYesod "MyApp" [parseRoutes|
-/ HomeR GET
-/static StaticR EmbeddedStatic getStatic
+  /       HomeR GET
+  /static StaticR EmbeddedStatic getStatic
 |]
 
 instance Yesod MyApp where
