@@ -1,7 +1,7 @@
 #!/usr/bin/env stack
 {-
   stack script
-    --resolver lts-8.5
+    --resolver lts-8.8
     --package yesod
     --
     -Wall -fwarn-tabs
