@@ -25,11 +25,13 @@ data Person = Person
 
 main :: IO ()
 main = putStrLn $ renderHtml [shamlet|
-  <p>Hello, my name is #{name person} and I am #{show $ age person}.
+  <p>Hello, my name is #{name person} and I am #{age person}.
   <p>
     Let's do some funny stuff with my name: #
     <b>#{sort $ map toLower (name person)}
-  <p>Oh, and in 5 years I'll be #{show ((+) 5 (age person))} years old.
+  <p>Oh, and in 5 years I'll be #{((+) 5 (age person))} years old.
+  <p>A number is #{four}.
 |]
   where
     person = Person "Michael" 26
+    four = 4 :: Int
