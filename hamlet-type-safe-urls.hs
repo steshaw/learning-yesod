@@ -3,6 +3,7 @@
   stack script
     --resolver lts-8.8
     --package blaze-html
+    --package blaze-markup
     --package shakespeare
     --package text
     --
@@ -24,7 +25,7 @@ renderRoute Fred _ = "/fred"
 
 fred :: HtmlUrl MyRoute
 fred = [hamlet|
-  <a href=@Fred>Go to Fred
+  <a href=@{Fred}>Go to Fred
 |]
 
 footer :: HtmlUrl MyRoute
