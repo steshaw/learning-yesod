@@ -16,12 +16,20 @@
 import Text.Hamlet (Render, HtmlUrl, hamlet)
 import Text.Blaze (Markup)
 import Text.Blaze.Html.Renderer.String (renderHtml)
+import Text.Blaze.Html5 ((!))
+import qualified Text.Blaze.Html5 as H
+import qualified Text.Blaze.Html5.Attributes as A
 
 data MyRoute = Home | Fred
 
 renderRoute :: Render MyRoute
 renderRoute Home _ = "/home"
 renderRoute Fred _ = "/fred"
+
+fredWithBlaze :: HtmlUrl MyRoute
+fredWithBlaze render = H.a ! A.href url $ "To go Fred"
+  where
+    url = H.textValue (render Fred [])
 
 fred :: HtmlUrl MyRoute
 fred = [hamlet|
@@ -39,7 +47,7 @@ footer = [hamlet|
 page :: Render MyRoute -> Markup
 page = [hamlet|
   <body>
-    ^{fred}
+    ^{fredWithBlaze}
     <p>This is my page.
     ^{fred}
     ^{footer}
