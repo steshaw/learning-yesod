@@ -12,14 +12,20 @@
 {-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-import Text.Hamlet (HtmlUrl, hamlet)
+import Text.Hamlet (Render, HtmlUrl, hamlet)
+import Text.Blaze (Markup)
 import Text.Blaze.Html.Renderer.String (renderHtml)
-import Data.Text (Text)
 
-data MyRoute = Home
+data MyRoute = Home | Fred
 
-render :: MyRoute -> [(Text, Text)] -> Text
-render Home _ = "/home"
+renderRoute :: Render MyRoute
+renderRoute Home _ = "/home"
+renderRoute Fred _ = "/fred"
+
+fred :: HtmlUrl MyRoute
+fred = [hamlet|
+  <a href=@Fred>Go to Fred
+|]
 
 footer :: HtmlUrl MyRoute
 footer = [hamlet|
@@ -29,9 +35,15 @@ footer = [hamlet|
     .
 |]
 
-main :: IO ()
-main = putStrLn $ renderHtml $ [hamlet|
+page :: Render MyRoute -> Markup
+page = [hamlet|
   <body>
+    ^{fred}
     <p>This is my page.
+    ^{fred}
     ^{footer}
-|] render
+    ^{fred}
+|]
+
+main :: IO ()
+main = putStrLn $ renderHtml (page renderRoute)
