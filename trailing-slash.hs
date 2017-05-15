@@ -27,8 +27,10 @@ import qualified Data.Text.Encoding as TE
 data Slash = Slash
 
 mkYesod "Slash" [parseRoutes|
-  /    RootR GET
-  /foo FooR GET
+  /      RootR GET
+  //     RootSlashesR GET
+  /foo   FooR GET
+  /foo// FooSlashesR GET
 |]
 
 instance Yesod Slash where
@@ -64,10 +66,23 @@ getRootR = defaultLayout
       <a href="@{RootR}//">RootR//
     <p>
       <a href="@{FooR}//">FooR//
+    <p>
+      <a href="@{RootSlashesR}">RootSlashesR @{RootSlashesR}
+    <p>
+      <a href="@{FooSlashesR}">FooSlashesR @{FooSlashesR}
   |]
+
+neverGetHere :: Widget
+neverGetHere = [whamlet|<h1>You should never get here|]
+
+getRootSlashesR :: Handler Html
+getRootSlashesR = defaultLayout neverGetHere
 
 getFooR :: Handler Html
 getFooR = getRootR
+
+getFooSlashesR :: Handler Html
+getFooSlashesR = defaultLayout neverGetHere
 
 main :: IO ()
 main = warp 3000 Slash
