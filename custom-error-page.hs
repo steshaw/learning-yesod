@@ -23,21 +23,21 @@ mkYesod "App" [parseRoutes|
 |]
 
 instance Yesod App where
-    errorHandler NotFound = fmap toTypedContent $ defaultLayout $ do
-        setTitle "Request page not located"
-        toWidget [hamlet|
-<h1>Not Found
-<p>We apologize for the inconvenience, but the requested page could not be located.
-|]
-    errorHandler other = defaultErrorHandler other
+  errorHandler NotFound = fmap toTypedContent $ defaultLayout $ do
+    setTitle "Request page not located"
+    toWidget [hamlet|
+      <h1>Not Found
+      <p>We apologize for the inconvenience, but the requested page could not be located.
+    |]
+  errorHandler other = defaultErrorHandler other
 
 getHomeR :: Handler Html
 getHomeR = defaultLayout
-    [whamlet|
-        <p>
-            <a href=@{ErrorR}>Internal server error
-            <a href=@{NotFoundR}>Not found
-    |]
+  [whamlet|
+    <p>
+      <a href=@{ErrorR}>Internal server error
+      <a href=@{NotFoundR}>Not found
+  |]
 
 getErrorR :: Handler ()
 getErrorR = error "This is an error"
