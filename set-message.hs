@@ -43,9 +43,10 @@ instance Yesod App where
 
 getHomeR :: Handler Html
 getHomeR = do
+  html <- defaultLayout [whamlet|<p>Try refreshing|]
   now <- liftIO getCurrentTime
-  setMessage $ toHtml $ "You previously visited at: " ++ show now
-  defaultLayout [whamlet|<p>Try refreshing|]
+  setMessage [shamlet|You previously visited at: #{show now}|]
+  return html
 
 main :: IO ()
 main = warp 3000 App
