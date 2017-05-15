@@ -32,24 +32,26 @@ mkYesod "Slash" [parseRoutes|
 |]
 
 instance Yesod Slash where
-    joinPath _ ar pieces' qs' =
-        fromText ar `mappend` encodePath pieces qs
-      where
-        qs = map (TE.encodeUtf8 *** go) qs'
-        go "" = Nothing
-        go x = Just $ TE.encodeUtf8 x
-        pieces = pieces' ++ [""]
+  approot = ApprootStatic "http://localhost:3000"
 
-    -- We want to keep canonical URLs. Therefore, if the URL is missing a
-    -- trailing slash, redirect. But the empty set of pieces always stays the
-    -- same.
-    cleanPath _ [] = Right []
-    cleanPath _ s
-        | dropWhile (not . T.null) s == [""] = -- the only empty string is the last one
-            Right $ init s
-        -- Since joinPath will append the missing trailing slash, we simply
-        -- remove empty pieces.
-        | otherwise = Left $ filter (not . T.null) s
+  joinPath _ ar pieces' qs' =
+    fromText ar `mappend` encodePath pieces qs
+    where
+      qs = map (TE.encodeUtf8 *** go) qs'
+      go "" = Nothing
+      go x = Just $ TE.encodeUtf8 x
+      pieces = pieces' ++ [""]
+
+  -- We want to keep canonical URLs. Therefore, if the URL is missing a
+  -- trailing slash, redirect. But the empty set of pieces always stays the
+  -- same.
+  cleanPath _ [] = Right []
+  cleanPath _ s
+    | dropWhile (not . T.null) s == [""] = -- the only empty string is the last one
+        Right $ init s
+    -- Since joinPath will append the missing trailing slash, we simply
+    -- remove empty pieces.
+    | otherwise = Left $ filter (not . T.null) s
 
 getRootR :: Handler Html
 getRootR = defaultLayout
