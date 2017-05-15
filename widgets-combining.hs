@@ -13,6 +13,7 @@
 {-# LANGUAGE TypeFamilies #-}
 
 import Yesod
+import Data.Monoid ((<>))
 
 data App = App
 
@@ -79,10 +80,7 @@ loremIpsum = toWidget [hamlet|
   |]
 
 myWidget :: WidgetT App IO ()
-myWidget = do
-  myWidget1
-  myWidget2
-  loremIpsum
+myWidget = myWidget1 <> myWidget2 <> loremIpsum
 
 getHomeR :: Handler Html
 getHomeR = defaultLayout $ do
