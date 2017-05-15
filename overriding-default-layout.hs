@@ -21,7 +21,11 @@ mkYesod "App" [parseRoutes|
 
 myLayout :: Widget -> Handler Html
 myLayout widget = do
-  pc <- widgetToPageContent widget
+  pc <- widgetToPageContent $ do
+    widget
+    toWidget [lucius|
+      body { font-family: Verdana }
+    |]
   withUrlRenderer
     [hamlet|
       $doctype 5
@@ -29,7 +33,6 @@ myLayout widget = do
         <head>
           <title>#{pageTitle pc}
           <meta charset="utf-8">
-          <style>body { font-family: verdana }
           ^{pageHead pc}
         <body>
           <article>
