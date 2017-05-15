@@ -23,9 +23,16 @@ mkYesod "App" [parseRoutes|
 
 instance Yesod App where
 
-myWidget1 :: WidgetT App IO ()
-myWidget1 = do
-  toWidget [hamlet|<h1 .title>My Title|]
+loremIpsum :: WidgetT App IO ()
+loremIpsum = toWidget [hamlet|
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam semper nibh nec elit ornare semper. Duis sagittis velit ac auctor elementum. Nam aliquam viverra ex, eget consequat sapien aliquam eget. Duis a arcu malesuada, rutrum ante quis, rhoncus mauris. Vestibulum finibus eget eros in mattis. Maecenas malesuada magna ac ipsum iaculis pretium. Sed nibh urna, varius id fermentum in, blandit id enim. Nullam finibus neque sapien, at dictum est viverra vel. Aenean vitae sollicitudin arcu. Maecenas leo odio, ullamcorper eu tristique vitae, lacinia a turpis.
+
+    <p>Quisque ac mi purus. Pellentesque nec lorem interdum lectus porta hendrerit a non lectus. Aenean ex quam, consectetur eu convallis sit amet, rutrum in lorem. Donec consequat lorem arcu, vel facilisis urna convallis ac. Maecenas molestie, arcu vitae pharetra euismod, mi metus tincidunt nisl, vitae tempor turpis felis fermentum eros. Sed mattis sem ac quam iaculis imperdiet. Praesent commodo ac enim ac varius. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam molestie tortor est, eleifend pulvinar enim hendrerit in.
+  |]
+
+heading :: WidgetT App IO ()
+heading = do
+  toWidget [hamlet|<h1 .title>Heading|]
   toWidget [lucius|
     h1 {
       color: green;
@@ -65,6 +72,7 @@ myWidget1 = do
       });
     });
   |]
+  loremIpsum
 
 myWidget2 :: WidgetT App IO ()
 myWidget2 = do
@@ -72,15 +80,8 @@ myWidget2 = do
   -- This JavaScript is automatically inserted as the penultimate child of the body.
   addScriptRemote "http://www.example.com/script.js"
 
-loremIpsum :: WidgetT App IO ()
-loremIpsum = toWidget [hamlet|
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam semper nibh nec elit ornare semper. Duis sagittis velit ac auctor elementum. Nam aliquam viverra ex, eget consequat sapien aliquam eget. Duis a arcu malesuada, rutrum ante quis, rhoncus mauris. Vestibulum finibus eget eros in mattis. Maecenas malesuada magna ac ipsum iaculis pretium. Sed nibh urna, varius id fermentum in, blandit id enim. Nullam finibus neque sapien, at dictum est viverra vel. Aenean vitae sollicitudin arcu. Maecenas leo odio, ullamcorper eu tristique vitae, lacinia a turpis.
-
-    <p>Quisque ac mi purus. Pellentesque nec lorem interdum lectus porta hendrerit a non lectus. Aenean ex quam, consectetur eu convallis sit amet, rutrum in lorem. Donec consequat lorem arcu, vel facilisis urna convallis ac. Maecenas molestie, arcu vitae pharetra euismod, mi metus tincidunt nisl, vitae tempor turpis felis fermentum eros. Sed mattis sem ac quam iaculis imperdiet. Praesent commodo ac enim ac varius. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam molestie tortor est, eleifend pulvinar enim hendrerit in.
-  |]
-
 myWidget :: WidgetT App IO ()
-myWidget = myWidget1 <> myWidget2 <> loremIpsum
+myWidget = heading <> myWidget2 <> heading
 
 getHomeR :: Handler Html
 getHomeR = defaultLayout $ do
@@ -90,7 +91,6 @@ getHomeR = defaultLayout $ do
   toWidgetHead
     [hamlet|<script src="/included-in-head.js">|]
   myWidget -- The title in here "wins" as it's set last.
-  loremIpsum -- Even more lorem ipsum.
 
 main :: IO ()
 main = warp 3000 App
