@@ -26,9 +26,9 @@ getHomeR :: Handler Html
 getHomeR = defaultLayout $ do
   setTitle "toWidgetHead and toWidgetBody"
   toWidgetBody
-    [hamlet|<script src=/included-in-body.js>|]
+    [hamlet|<script src="/included-in-body.js">|]
   toWidgetHead
-    [hamlet|<script src=/included-in-head.js>|]
+    [hamlet|<script src="/included-in-head.js">|]
 
 main :: IO ()
 main = warp 3000 App
