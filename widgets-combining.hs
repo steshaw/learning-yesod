@@ -30,7 +30,7 @@ loremIpsum = toWidget [hamlet|
     <p>Quisque ac mi purus. Pellentesque nec lorem interdum lectus porta hendrerit a non lectus. Aenean ex quam, consectetur eu convallis sit amet, rutrum in lorem. Donec consequat lorem arcu, vel facilisis urna convallis ac. Maecenas molestie, arcu vitae pharetra euismod, mi metus tincidunt nisl, vitae tempor turpis felis fermentum eros. Sed mattis sem ac quam iaculis imperdiet. Praesent commodo ac enim ac varius. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam molestie tortor est, eleifend pulvinar enim hendrerit in.
   |]
 
-heading :: WidgetT App IO ()
+heading :: Widget
 heading = do
   toWidget [hamlet|<h1 .title>Heading|]
   toWidget [lucius|
@@ -74,13 +74,13 @@ heading = do
   |]
   loremIpsum
 
-myWidget2 :: WidgetT App IO ()
+myWidget2 :: Widget
 myWidget2 = do
   setTitle "My Page Title"
   -- This JavaScript is automatically inserted as the penultimate child of the body.
   addScriptRemote "http://www.example.com/script.js"
 
-myWidget :: WidgetT App IO ()
+myWidget :: Widget
 myWidget = heading <> myWidget2 <> heading
 
 getHomeR :: Handler Html

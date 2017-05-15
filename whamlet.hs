@@ -22,14 +22,14 @@ mkYesod "App" [parseRoutes|
 
 instance Yesod App where
 
-page :: WidgetT App IO ()
+page :: Widget
 page =
   [whamlet|
     <p>This is my page. I hope you enjoyed it.
     ^{footer}
   |]
 
-footer :: WidgetT App IO ()
+footer :: Widget
 footer = do
   toWidget
     [lucius|
