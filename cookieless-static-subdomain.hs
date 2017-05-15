@@ -55,14 +55,6 @@ instance Yesod App where
   approot = ApprootStatic "http://lvh.me:3000"
 
   -- Set up urlRenderOverride to point to the static domain name
---  urlRenderOverride a (StaticR s) = Just $ uncurry (joinPath a "http://static.lvh.me:3000") $ renderRoute s
-
---  urlRenderOverride a (StaticR s) =
---    let
---      rr = renderRoute s
---      rr1 = trace ("renderRoute = " <> show rr) $ rr
---    in Just $ uncurry (joinPath a "http://static.lvh.me:3000") $ rr1
-
   urlRenderOverride a (StaticR s) =
     let renderedRoute = renderRoute s
         rr = trace ("renderedRoute = " <> show renderedRoute) renderedRoute
